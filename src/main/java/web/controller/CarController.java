@@ -4,28 +4,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import web.service.CarServiceImpl;
+import org.springframework.web.bind.annotation.RequestParam;
+import web.service.CarService;
 
 @Controller
-@RequestMapping("/cars")
 public class CarController {
-    private final CarServiceImpl carService;
+    private final CarService carService;
 
-    public CarController(@Autowired CarServiceImpl carService) {
+    public CarController(@Autowired CarService carService) {
         this.carService = carService;
     }
 
-    @GetMapping
-    public String index(Model model) {
-        model.addAttribute("cars", carService.index());
+    @GetMapping("/cars")
+    public String cars(@RequestParam(value = "count", required = false) Integer count, Model model) {
+        model.addAttribute("cars", carService.showCars(count));
         return "cars";
-    }
-
-    @GetMapping(value = "/{id}")
-    public String show(@PathVariable("id") int id, Model model) {
-        model.addAttribute("car", carService.show(id));
-        return "show_car";
     }
 }

@@ -3,10 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <title>All Cars</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 300px;
+        }
+
+        td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-<div th:each="car : ${cars}">
-    <a th:href="@{/cars/{id}(id=${car.getId()})}" th:text="${car.getModel()}">car</a>
-</div>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Model</th>
+        <th>Series</th>
+    </tr>
+    <tr th:each="car : ${cars}">
+        <td th:text="${car.getId()}">value</td>
+        <td th:text="${car.getModel()}">value</td>
+        <td th:text="${car.getSeries()}">value</td>
+    </tr>
+</table>
 </body>
 </html>
