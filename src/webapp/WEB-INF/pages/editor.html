@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Table editor</title>
+</head>
+<body>
+Your can edit the user:
+<br>
+<form th:method="POST" th:action="@{/edit?id={id}(id=${user.getId()})}" th:object="${user}">
+    <label for="name">Enter name: </label>
+    <input type="text" th:field="*{name}" id="name" required/>
+    <br>
+    <label for="lastName">Enter last name: </label>
+    <input type="text" th:field="*{lastName}" id="lastName" required/>
+    <br>
+    <label for="age">Enter age: </label>
+    <input type="text" th:field="*{age}" id="age" required/>
+    <br>
+    <input type="submit" value="Update!">
+</form>
+</body>
+</html>
