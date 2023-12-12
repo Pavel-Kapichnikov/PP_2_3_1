@@ -1,19 +1,17 @@
 package web.models;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
 public class User {
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "name")
     private String name;
-    @Column(name = "lastName")
+    @Column(name="last_name")
     private String lastName;
-    @Column(name = "age")
     private Integer age;
 
     public User() {
@@ -57,5 +55,26 @@ public class User {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id) &&
+                Objects.equals(name, user.name) &&
+                Objects.equals(lastName, user.lastName) &&
+                Objects.equals(age, user.age);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = (31 * result) ^ Objects.hashCode(id);
+        result = (31 * result) ^ Objects.hashCode(name);
+        result = (31 * result) ^ Objects.hashCode(lastName);
+        result = (31 * result) ^ Objects.hashCode(age);
+        return result;
     }
 }
