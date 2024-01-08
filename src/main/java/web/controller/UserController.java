@@ -1,6 +1,5 @@
 package web.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,9 +11,10 @@ import web.service.UserService;
 
 @Controller
 public class UserController {
+    private static final String REDIRECT_USERS = "redirect:/users";
     private final UserService userService;
 
-    public UserController(@Autowired UserService userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
@@ -32,7 +32,7 @@ public class UserController {
     @PostMapping("/create")
     public String create(@ModelAttribute("user") User user) {
         userService.createUser(user);
-        return "redirect:/users";
+        return REDIRECT_USERS;
     }
 
     @GetMapping("/edit")
@@ -44,12 +44,12 @@ public class UserController {
     @PostMapping("/edit")
     public String edit(@ModelAttribute("user") User user, @RequestParam(value = "id") long id) {
         userService.editUser(id, user);
-        return "redirect:/users";
+        return REDIRECT_USERS;
     }
 
     @GetMapping("/delete")
     public String deleteUser(@RequestParam(value = "id") long id) {
         userService.deleteUser(id);
-        return "redirect:/users";
+        return REDIRECT_USERS;
     }
 }

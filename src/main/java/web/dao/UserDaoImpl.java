@@ -1,21 +1,22 @@
 package web.dao;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import web.models.User;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@Component
+@Repository
 public class UserDaoImpl implements UserDao {
-    @PersistenceContext()
+    @PersistenceContext
     private EntityManager em;
 
     @Override
     public List<User> getAllUsers() {
         String jpql = "SELECT u FROM User u";
-        return em.createQuery(jpql).getResultList();
+        return em.createQuery(jpql, User.class).getResultList();
     }
 
     @Override
@@ -25,7 +26,11 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User getUserById(Long id) {
-        return em.find(User.class, id);
+        User user = em.find(User.class, id);
+        if (user == null) {
+            throw new EntityNotFoundException("User not found with id: " + id);
+        }
+        return user;
     }
 
     @Override

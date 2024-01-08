@@ -1,13 +1,13 @@
 package web.service;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import web.dao.UserDao;
 import web.models.User;
 
 import java.util.List;
 
-@Component
+@Service
 public class UserServiceImpl implements UserService {
 
     private final UserDao userDao;
@@ -17,11 +17,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<User> getAllUsers(){return userDao.getAllUsers();}
     @Override
     @Transactional
     public void createUser(User user) {userDao.createUser(user);}
     @Override
+    @Transactional(readOnly = true)
     public User getUserById(Long id) {return userDao.getUserById(id);}
     @Override
     @Transactional
