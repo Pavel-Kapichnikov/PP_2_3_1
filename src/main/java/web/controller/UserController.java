@@ -1,7 +1,9 @@
 package web.controller;
 
+import javax.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,31 +20,49 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/users")
-    public String users(Model model) {
-        model.addAttribute("users", userService.getAllUsers());
-        return "users";
+    @GetMapping("/index")
+    public String indexPage() {
+        return "index";
     }
+
+    @GetMapping("/users")
+    public String usersPage(Model model) {
+        model.addAttribute("users", userService.getAllUsers());
+        return "usersPage";
+    }
+
     @GetMapping("/create")
-    public String creator(Model model) {
+    public String createPage(Model model) {
         model.addAttribute("user", new User());
-        return "creator";
+        return "createPage";
     }
 
     @PostMapping("/create")
-    public String create(@ModelAttribute("user") User user) {
+    public String createUser(@ModelAttribute("user") @Valid User user,
+                             BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            System.out.println("Incorrect form data!");
+            return "createPage";
+        }
         userService.createUser(user);
         return REDIRECT_USERS;
     }
 
     @GetMapping("/edit")
-    public String editor(@RequestParam(value = "id") long id, Model model) {
+    public String editPage(@RequestParam(value = "id") long id, Model model) {
         model.addAttribute("user", userService.getUserById(id));
-        return "editor";
+        return "editPage";
     }
 
     @PostMapping("/edit")
-    public String edit(@ModelAttribute("user") User user, @RequestParam(value = "id") long id) {
+    public String editUser(@ModelAttribute("user") @Valid User user,
+                           BindingResult bindingResult,
+                           @RequestParam(value = "id") long id) {
+        if (bindingResult.hasErrors()) {
+            System.out.println("Incorrect form data!");
+            return "editPage";
+        }
+        System.out.println("Form data is Ok!");
         userService.editUser(id, user);
         return REDIRECT_USERS;
     }

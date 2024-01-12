@@ -1,6 +1,10 @@
 package web.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 @Entity
@@ -9,13 +13,18 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Size(min = 2, max = 30, message = " Name should be between 2 and 30 characters")
+    @NotBlank(message = " Name should not be empty")
     private String name;
-    @Column(name="last_name")
+    @Size(min = 2, max = 30, message = " Last Name should be between 2 and 30 characters")
+    @NotBlank(message = " Last Name should not be empty")
+    @Column(name = "last_name")
     private String lastName;
+    @NotNull(message = " Age should not be null")
+    @Min(value = 0, message = " Age should be greater then 0")
     private Integer age;
 
     public User() {
-
     }
 
     public User(long id, String name, String lastName, Integer age) {
